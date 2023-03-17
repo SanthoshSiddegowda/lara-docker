@@ -5,49 +5,49 @@ help:
 
 ##@ [Docker]
 up: ## Spin up the containers and run the app UI in watch mode
-	docker compose up -d
+	docker-compose up -d
 
 down: ## Shut down the containers
-	docker compose down \
+	docker-compose down \
 	&& rm -f docker/redis/data/dump.rdb
 
 up-down: ## Stop and Start the containers
 	make down && make up
 
 ps: ## status of the containers
-	docker compose ps
+	docker-compose ps
 
 build: ## Build all docker images OR a specific image by providing the service name via: make build SERVICE_NAME=<service>
-	docker compose build $(SERVICE_NAME)
+	docker-compose build $(SERVICE_NAME)
 
 ##@ [Application]
 configure: ## Configures the application when setting it for the first time
 	cp .env.example .env \
 	&& make install \
-	&& make artisan ARGS="key:generate --ansi"
+	&& make art ARGS="key:generate --ansi"
 
 composer: ## Run composer commands. Specify the command e.g. via make composer ARGS="install|update|require <dependency>"
-	docker compose run --rm app composer $(ARGS)
+	docker-compose run --rm app composer $(ARGS)
 
 install: ## Install all the dependencies
-	docker compose run --rm app composer install
+	docker-compose run --rm app composer install
 
 composer-bump: ## Updates the dependencies and the min version on composer.json
-	docker compose run --rm app composer update \
-	&& docker compose run --rm app composer bump \
+	docker-compose run --rm app composer update \
+	&& docker-compose run --rm app composer bump \
 
-artisan: ## Run artisan commands. Specify the command e.g. via make artisan ARGS="tinker"
-	docker compose run --rm app php artisan $(ARGS)
+art: ## Run art commands. Specify the command e.g. via make art ARGS="tinker"
+	docker-compose run --rm app php artisan $(ARGS)
 
 lint: ## Run the Linter. Pass arguments and options via make lint ARGS="-q"
-	docker compose run --rm app ./vendor/bin/pint $(ARGS)
+	docker-compose run --rm app ./vendor/bin/pint $(ARGS)
 
 test: ## Run all the tests. Pass arguments and options via make test ARGS="--filter=ExampleTest"
-	docker compose run --rm app ./vendor/bin/pest $(ARGS)
+	docker-compose run --rm app ./vendor/bin/pest $(ARGS)
 
 prepare: ## Run tools to prepare for commit
-	docker compose run --rm app ./vendor/bin/pint --dirty
+	docker-compose run --rm app ./vendor/bin/pint --dirty
 
 config-cache: ## Run and clear configuration
-	docker compose run --rm app php artisan config:clear \
-	&& docker compose run --rm app php artisan cache:clear \
+	docker-compose run --rm app php art config:clear \
+	&& docker-compose run --rm app php art cache:clear \
