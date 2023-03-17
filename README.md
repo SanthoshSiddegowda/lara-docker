@@ -22,11 +22,6 @@
 
 ## Running the configuration
 
-Build the docker services with
-
-```bash
-make build
-```
 
 Run this command for the initial app configuration
 
@@ -34,6 +29,17 @@ Run this command for the initial app configuration
 make configure
 ```
 
+Build the docker services with
+
+```bash
+make build
+```
+
+Installing the dependencies
+
+```bash
+make install
+```
 ## Running the Application
 
 Run this command to start the app
